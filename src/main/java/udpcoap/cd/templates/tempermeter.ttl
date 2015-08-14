@@ -1,0 +1,15 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ssn: <http://purl.oclc.org/NET/ssnx/ssn#> .
+@prefix hmtr: <http://purl.org/NET/ssnext/heatmeters#> .
+@prefix ssncom: <http://purl.org/NET/ssnext/communication#> .
+
+<coap://${HOST}:${PORT}/meter> a hmtr:HeatMeter ;
+    rdfs:label "Heat Meter #${PORT}" ;
+    ssn:hasSubsystem <coap://${HOST}:${PORT}/meter/temperature> .
+
+<coap://${HOST}:${PORT}/meter/temperature> a ssn:Sensor ;
+    ssn:observes hmtr:Temperature ;
+    ssncom:hasCommunicationEndpoint <ws://demo-dev.semiot.ru/ws?topic=${HOST}.${PORT}.meter.temperature.obs> .
+
+<ws://demo-dev.semiot.ru/ws?topic=${HOST}.${PORT}.meter.temperature.obs> a ssncom:CommunicationEndpoint ;
+    ssncom:protocol "WAMP" .
